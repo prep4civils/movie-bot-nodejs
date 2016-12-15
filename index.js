@@ -8,6 +8,16 @@ var utf8 = require('utf8');
 var firebase = require('firebase');
 var admin = require("firebase-admin");
 
+function redirectSec(req, res, next) {
+  if (req.headers['x-forwarded-proto'] == 'http') {
+      res.redirect('https://' + req.headers.host + req.path);
+  } else {
+      return next();
+  }
+}
+
+self.app.get(r, redirectSec, self.routes[r]);
+
 eval(fs.readFileSync('messenger.js')+'');
 
 admin.initializeApp({
